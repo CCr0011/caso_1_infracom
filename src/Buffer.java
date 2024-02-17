@@ -23,18 +23,17 @@ public class Buffer {
     notifyAll();
   }
 
-  public synchronized Boolean remove() {
+  public Boolean remove() {
     while (buff.size() == 0) {
-      try {
-        wait();
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
+      Thread.yield();
     }
 
-    Boolean status = buff.remove(0);
+    Boolean status = null;
 
-    notifyAll();
+    synchronized (this) {
+      status = buff.remove(0);
+      notifyAll();
+    }
 
     return status;
   }
