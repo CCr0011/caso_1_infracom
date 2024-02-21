@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
@@ -13,21 +14,31 @@ public class GameLife {
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Ingrese el nombre del archivo del estado inicial: ");
+        String fileName = br.readLine();
 
-        N = Integer.parseInt(br.readLine());
+        BufferedReader fileR = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
+
+        N = Integer.parseInt(fileR.readLine());
 
         GameLife.board = new boolean[N][N];
 
         for (int i = 0; i < N; i++) {
-            String[] line = br.readLine().split(",");
+            String[] line = fileR.readLine().split(",");
             for (int j = 0; j < N; j++) {
                 GameLife.board[i][j] = Boolean.parseBoolean(line[j]);
             }
         }
 
+        fileR.close();
+
+        System.out.print("Ingrese el número de turnos: ");
+
         int turns = Integer.parseInt(br.readLine());
 
-        System.out.println("Turno 0");
+        br.close();
+
+        System.out.println("\nTurno 0");
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
@@ -39,7 +50,7 @@ public class GameLife {
         }
 
         for (int i = 0; i < turns; i++) {
-            System.out.println("Turno " + (i + 1));
+            System.out.println("\nTurno " + (i + 1));
             GameLife.cellsInform = new Cell[N][N];
             GameLife.cellsReceive = new Cell[N][N];
 
